@@ -23,7 +23,7 @@ const WT = 300000;
 const start = async () => {
   // Launch the browser
   const browser = await puppeteer.launch({
-    // headless: false,
+    headless: false,
     args: ["--no-sandbox"],
   });
 
