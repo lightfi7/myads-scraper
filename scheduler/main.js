@@ -170,18 +170,18 @@ var tempSchema = mongoose.Schema({
 
 const Temp = mongoose.model("temps", tempSchema);
 
-const clear = async () => {
-  const duplicateRecords = await Ads.aggregate([
-    { $group: { _id: "$id", count: { $sum: 1 }, ids: { $addToSet: "$_id" } } },
-    { $match: { count: { $gt: 1 } } },
-  ]).exec();
-  const idsToRemove = duplicateRecords.flatMap(({ ids }) => ids.slice(1));
-  console.log(idsToRemove);
+// const clear = async () => {
+//   const duplicateRecords = await Ads.aggregate([
+//     { $group: { _id: "$id", count: { $sum: 1 }, ids: { $addToSet: "$_id" } } },
+//     { $match: { count: { $gt: 1 } } },
+//   ]).exec();
+//   const idsToRemove = duplicateRecords.flatMap(({ ids }) => ids.slice(1));
+//   console.log(idsToRemove);
 
-  await Ads.deleteMany({ _id: { $in: idsToRemove } }).exec();
-};
-clear();
-return;
+//   await Ads.deleteMany({ _id: { $in: idsToRemove } }).exec();
+// };
+// clear();
+// return;
 
 async function storeSched() {
   const element = await Temp.findOne({});
