@@ -184,7 +184,7 @@ const Temp = mongoose.model("temps", tempSchema);
 // return;
 
 async function storeSched() {
-  const element = await Temp.findOne({});
+  const element = await Temp.findOne({}).sort({ _id: -1 });
   try {
     if (element == null) return;
     const response = await axios.get(
@@ -195,7 +195,7 @@ async function storeSched() {
       response.data.data.id = element.id;
       response.data.data.domain = element.domain;
       response.data.data.publisher = element.platform;
-      
+
       let l = element.resource_urls[0]?.image_url;
       if (response.data.data.resource_urls)
         l = response.data.data.resource_urls[0]?.image_url;
@@ -555,23 +555,23 @@ const main = async (p) => {
     switch (p) {
       case 0:
         page = await getYoutubeAds(page);
-        pages[p] = page;
+        pages[p] = page % 10;
         break;
       case 1:
         page = await getTiktokAds(page);
-        pages[p] = page;
+        pages[p] = page % 10;
         break;
       case 2:
         page = await getFacebookAds(page);
-        pages[p] = page;
+        pages[p] = page % 10;
         break;
       case 3:
         page = await getInstagramAds(page);
-        pages[p] = page;
+        pages[p] = page % 10;
         break;
       case 4:
         page = await getTwitterAds(page);
-        pages[p] = page;
+        pages[p] = page % 10;
         break;
       case 5:
         page = await getPinterestAds(page);
@@ -582,7 +582,7 @@ const main = async (p) => {
   } catch (err) {
     console.log(err);
   }
-  setTimeout(() => main((p + 1) % 6), 1000 * 60 * 60);
+  setTimeout(() => main((p + 1) % 3), 1000 * 60 * 60);
 };
 
-main(Math.floor(Math.random() * 6) * 0);
+main(Math.floor(Math.random() * 3) * 0);
