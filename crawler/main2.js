@@ -23,7 +23,7 @@ const WT = 300000;
 const start = async () => {
   // Launch the browser
   const browser = await puppeteer.launch({
-    // headless: false,
+    headless: false,
     args: ["--no-sandbox"],
   });
 
@@ -103,8 +103,7 @@ const start = async () => {
 
   console.log(authorization);
 
-  await new Promise((resolve) => setTimeout(resolve, 1000 * 3));
-
+  await page.waitForSelector("#zbaseiframe", { timeout: WT });
   const elementHandle = await page.$("#zbaseiframe"); // Replace '#iframeId' with your iframe selector
   const frame = await elementHandle.contentFrame();
 
