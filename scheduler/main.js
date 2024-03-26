@@ -168,7 +168,7 @@ var tempSchema = mongoose.Schema({
   last_seen: String,
 });
 
-const Temp = mongoose.model("temps", tempSchema);
+const Temp = mongoose.model("temps2", tempSchema);
 
 // const clear = async () => {
 //   const duplicateRecords = await Ads.aggregate([
