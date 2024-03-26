@@ -235,7 +235,7 @@ async function storeSched() {
   return 1;
 }
 
-async function getAds(page) {
+async function getTwitterAds(page) {
   let keys = [];
   const y = new Date();
   y.setDate(y.getDate() - 1);
@@ -243,7 +243,7 @@ async function getAds(page) {
   try {
     keys = await Ads.find({
       createdAt: { $gte: y },
-      platform: 7,
+      platform: 2,
     }).distinct("id");
     const keys_ = await Temp.find({}).distinct("id");
     keys = keys.concat(keys_);
@@ -260,7 +260,160 @@ async function getAds(page) {
   const start_time = parseInt(n.getTime() / 1e3);
   const end_time = parseInt(timestamp / 1e3);
   try {
-    const params = `n=${page}&begin=${start_time}&end=${end_time}`;
+    const params = `platform=2&n=${page}&begin=${start_time}&end=${end_time}`;
+    const r = await axios.get("http://localhost:5001/api/get?" + params);
+    const data = r.data.data;
+    if (r.data.errcode == 110008) return page;
+    for (i in data) {
+      let element = data[i];
+      element.id = element.ad_key;
+      if (keys.includes(element.ad_key)) {
+        console.log(`>>> ${element.ad_key}`);
+        continue;
+      }
+      if (element.resource_urls[0]?.type === 2) {
+        data_array.push(element);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  try {
+    await Temp.insertMany(data_array);
+    const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    if (v.data == 400) return 0;
+  } catch (err) {}
+  return page + 1;
+}
+
+async function getInstagramAds(page) {
+  let keys = [];
+  const y = new Date();
+  y.setDate(y.getDate() - 1);
+  y.setHours(0, 0, 0, 0);
+  try {
+    keys = await Ads.find({
+      createdAt: { $gte: y },
+      platform: 5,
+    }).distinct("id");
+    const keys_ = await Temp.find({}).distinct("id");
+    keys = keys.concat(keys_);
+  } catch (err) {
+    console.log(";(");
+  }
+  let data_array = [];
+  const t = new Date(),
+    n = new Date();
+  n.setDate(t.getDate() - 1);
+  n.setHours(0, 0, 0, 0);
+  t.setHours(23, 59, 59, 999);
+  const timestamp = t.getTime();
+  const start_time = parseInt(n.getTime() / 1e3);
+  const end_time = parseInt(timestamp / 1e3);
+  try {
+    const params = `platform=5&n=${page}&begin=${start_time}&end=${end_time}`;
+    const r = await axios.get("http://localhost:5001/api/get?" + params);
+    const data = r.data.data;
+    if (r.data.errcode == 110008) return page;
+    for (i in data) {
+      let element = data[i];
+      element.id = element.ad_key;
+      if (keys.includes(element.ad_key)) {
+        console.log(`>>> ${element.ad_key}`);
+        continue;
+      }
+      if (element.resource_urls[0]?.type === 2) {
+        data_array.push(element);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  try {
+    await Temp.insertMany(data_array);
+    const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    if (v.data == 400) return 0;
+  } catch (err) {}
+  return page + 1;
+}
+
+async function getPinterestAds(page) {
+  let keys = [];
+  const y = new Date();
+  y.setDate(y.getDate() - 1);
+  y.setHours(0, 0, 0, 0);
+  try {
+    keys = await Ads.find({
+      createdAt: { $gte: y },
+      platform: 4,
+    }).distinct("id");
+    const keys_ = await Temp.find({}).distinct("id");
+    keys = keys.concat(keys_);
+  } catch (err) {
+    console.log(";(");
+  }
+  let data_array = [];
+  const t = new Date(),
+    n = new Date();
+  n.setDate(t.getDate() - 1);
+  n.setHours(0, 0, 0, 0);
+  t.setHours(23, 59, 59, 999);
+  const timestamp = t.getTime();
+  const start_time = parseInt(n.getTime() / 1e3);
+  const end_time = parseInt(timestamp / 1e3);
+  try {
+    const params = `platform=4&n=${page}&begin=${start_time}&end=${end_time}`;
+    const r = await axios.get("http://localhost:5001/api/get?" + params);
+    const data = r.data.data;
+    if (r.data.errcode == 110008) return page;
+    for (i in data) {
+      let element = data[i];
+      element.id = element.ad_key;
+      if (keys.includes(element.ad_key)) {
+        console.log(`>>> ${element.ad_key}`);
+        continue;
+      }
+      if (element.resource_urls[0]?.type === 2) {
+        data_array.push(element);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  try {
+    await Temp.insertMany(data_array);
+    const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    if (v.data == 400) return 0;
+  } catch (err) {}
+  return page + 1;
+}
+
+async function getYahooAds(page) {
+  let keys = [];
+  const y = new Date();
+  y.setDate(y.getDate() - 1);
+  y.setHours(0, 0, 0, 0);
+  try {
+    keys = await Ads.find({
+      createdAt: { $gte: y },
+      platform: 6,
+    }).distinct("id");
+    const keys_ = await Temp.find({}).distinct("id");
+    keys = keys.concat(keys_);
+  } catch (err) {
+    console.log(";(");
+  }
+  let data_array = [];
+  const t = new Date(),
+    n = new Date();
+  n.setDate(t.getDate() - 1);
+  n.setHours(0, 0, 0, 0);
+  t.setHours(23, 59, 59, 999);
+  const timestamp = t.getTime();
+  const start_time = parseInt(n.getTime() / 1e3);
+  const end_time = parseInt(timestamp / 1e3);
+  try {
+    const params = `platform=6&n=${page}&begin=${start_time}&end=${end_time}`;
     const r = await axios.get("http://localhost:5001/api/get?" + params);
     const data = r.data.data;
     if (r.data.errcode == 110008) return page;
@@ -291,10 +444,31 @@ cron.schedule("*/2 * * * *", () => {
   storeSched();
 });
 
+const pages = [1, 1, 1, 1, 1, 1];
+
 const main = async (p) => {
   console.log(`>>> ${p} >>>`);
-  await getAds(p);
-  setTimeout(() => main((p + 1) % 10), 1000 * 60 * 60);
+  let page = pages[p];
+  try {
+    switch (p) {
+      case 0:
+        page = await getInstagramAds(page);
+        pages[p] = page % 10;
+        break;
+      case 1:
+        page = await getTwitterAds(page);
+        pages[p] = page % 10;
+        break;
+      case 2:
+        page = await getPinterestAds(page);
+        pages[p] = page % 10;
+        break;
+    }
+    console.log(`${p} ;)`);
+  } catch (err) {
+    console.log(err);
+  }
+  setTimeout(() => main((p + 1) % 3), 1000 * 60 * 60);
 };
 
-main(Math.floor(1));
+main(Math.floor(Math.random() * 3) * 0);
