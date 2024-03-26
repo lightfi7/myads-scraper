@@ -126,7 +126,7 @@ const start = async () => {
     console.log(begin, end, n);
     const data = {
       authorization,
-      platform
+      platform,
       begin,
       end,
       n,
