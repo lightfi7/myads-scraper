@@ -463,12 +463,16 @@ const main = async (p) => {
         page = await getPinterestAds(page);
         pages[p] = page % 10;
         break;
+      case 3:
+        page = await getYahooAds(page);
+        pages[p] = page % 10;
+        break;
     }
     console.log(`${p} ;)`);
   } catch (err) {
     console.log(err);
   }
-  setTimeout(() => main((p + 1) % 3), 1000 * 60 * 60);
+  setTimeout(() => main((p + 1) % 4), 1000 * 60 * 60);
 };
 
-main(Math.floor(Math.random() * 3) * 0);
+main(Math.floor(Math.random() * 4) * 0);
