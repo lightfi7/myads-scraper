@@ -475,4 +475,4 @@ const main = async (p) => {
   setTimeout(() => main((p + 1) % 4), 1000 * 60 * 60);
 };
 
-main(Math.floor(Math.random() * 4) * 0);
+main(Math.floor(Math.random() * 4));
