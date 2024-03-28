@@ -105,6 +105,7 @@ const start = async () => {
 
   console.log(authorization);
 
+  await page.waitForSelector("#zbaseiframe", { timeout: WT });
   const elementHandle = await page.$("#zbaseiframe"); // Replace '#iframeId' with your iframe selector
   const frame = await elementHandle.contentFrame();
 
@@ -134,6 +135,9 @@ const start = async () => {
     };
 
     try {
+      await page.waitForSelector("#zbaseiframe", { timeout: WT });
+      const elementHandle = await page.$("#zbaseiframe"); // Replace '#iframeId' with your iframe selector
+      const frame = await elementHandle.contentFrame();
       const response = await frame.evaluate((data) => {
         return new Promise((resolve, reject) => {
           const xhr = new XMLHttpRequest();
@@ -179,6 +183,9 @@ const start = async () => {
       first_seen,
     };
     try {
+      await page.waitForSelector("#zbaseiframe", { timeout: WT });
+      const elementHandle = await page.$("#zbaseiframe"); // Replace '#iframeId' with your iframe selector
+      const frame = await elementHandle.contentFrame();
       const response = await frame.evaluate((data) => {
         return new Promise((resolve, reject) => {
           const xhr = new XMLHttpRequest();
@@ -213,16 +220,11 @@ const start = async () => {
 
   app.get("/api/sneeze", async (req, res) => {
     waiting = true;
-    const disabled = await frame.evaluate(() => {
-      return (
-        document
-          .querySelector(".el-pagination button.btn-next")
-          .getAttribute("disabled") == "disabled"
-      );
-    });
-    if (disabled) return res.send(400);
-    else res.send(200);
-    await frame.click(".el-pagination button.btn-next");
+    await page.waitForSelector("#zbaseiframe", { timeout: WT });
+    const elementHandle = await page.$("#zbaseiframe"); // Replace '#iframeId' with your iframe selector
+    const frame = await elementHandle.contentFrame();
+    await frame.reload();
+    res.send(200);
     waiting = false;
   });
 
