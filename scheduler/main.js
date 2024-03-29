@@ -582,7 +582,7 @@ const main = async (p) => {
   } catch (err) {
     console.log(err);
   }
-  setTimeout(() => main((p + 1) % 3), 1000 * 60 * 60);
+  setTimeout(() => main((p + 1) % 3), 1000 * 60 * 5);
 };
 
 main(Math.floor(Math.random() * 3) * 0);
