@@ -216,10 +216,7 @@ const start = async () => {
 
   app.get("/api/sneeze", async (req, res) => {
     waiting = true;
-    await page.waitForSelector("#zbaseiframe", { timeout: WT });
-    const elementHandle = await page.$("#zbaseiframe"); // Replace '#iframeId' with your iframe selector
-    const frame = await elementHandle.contentFrame();
-    await frame.reload();
+    await page.reload();
     res.send(200);
     waiting = false;
   });
