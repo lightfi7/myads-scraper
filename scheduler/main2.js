@@ -449,7 +449,7 @@ cron.schedule("*/2 * * * *", () => {
   storeSched();
 });
 
-const pages = [1, 1, 1, 1, 1, 1];
+let pages = [1, 1, 1, 1, 1, 1];
 
 const main = async (p) => {
   console.log(`>>> ${p} >>>`);

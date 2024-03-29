@@ -545,7 +545,7 @@ async function getPinterestAds(page) {
   return page + 1;
 }
 
-const pages = [1, 1, 1, 1, 1, 1];
+let pages = [1, 1, 1, 1, 1, 1];
 
 cron.schedule("*/2 * * * *", () => {
   console.log("=>");
@@ -589,4 +589,4 @@ const main = async (p) => {
   setTimeout(() => main((p + 1) % 3), 1000 * 60 * 60);
 };
 
-main(Math.floor(Math.random() * 3) * 0);
+main(Math.floor(Math.random() * 3));
