@@ -183,6 +183,8 @@ const Temp = mongoose.model("stemps", tempSchema);
 // clear();
 // return;
 
+let storedCount = 0;
+
 async function storeSched() {
   const element = await Temp.findOne({}).sort({ _id: -1 });
   try {
@@ -191,7 +193,7 @@ async function storeSched() {
       `http://localhost:5001/api/information?id=${element.id}&first_seen=${element.created_at}`
     );
     if (response.status === 200) {
-      if (response.data.banned) return 0;
+      if (response.data.banned) return;
       response.data.data.id = element.id;
       response.data.data.domain = element.domain;
       response.data.data.publisher = element.platform;
@@ -224,15 +226,17 @@ async function storeSched() {
       await Ads.create(response.data.data);
       console.log(";) mongodb");
     }
-    await new Promise((resolve, reject) =>
-      setTimeout(() => resolve(), 1000 * 20 + Math.floor(Math.random() * 2000))
-    );
     await Temp.deleteOne({ _id: element._id });
+    storedCount++;
+    if (storedCount > 15) {
+      const v = await axios.get(`http://localhost:5001/api/sneeze`);
+      if (v.data == 400) return 0;
+      storedCount = 0;
+    }
   } catch (err) {
     await Temp.deleteOne({ _id: element._id });
     console.log(err);
   }
-  return 1;
 }
 
 async function getYoutubeAds(page) {
@@ -280,8 +284,8 @@ async function getYoutubeAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    if (v.data == 400) return 0;
+    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    // if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }
@@ -331,8 +335,8 @@ async function getTiktokAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    if (v.data == 400) return 0;
+    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    // if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }
@@ -382,8 +386,8 @@ async function getFacebookAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    if (v.data == 400) return 0;
+    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    // if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }
@@ -433,8 +437,8 @@ async function getTwitterAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    if (v.data == 400) return 0;
+    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    // if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }
@@ -484,8 +488,8 @@ async function getInstagramAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    if (v.data == 400) return 0;
+    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    // if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }
@@ -535,8 +539,8 @@ async function getPinterestAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    if (v.data == 400) return 0;
+    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    // if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }
@@ -582,7 +586,7 @@ const main = async (p) => {
   } catch (err) {
     console.log(err);
   }
-  setTimeout(() => main((p + 1) % 3), 1000 * 60 * 5);
+  setTimeout(() => main((p + 1) % 3), 1000 * 60 * 60);
 };
 
 main(Math.floor(Math.random() * 3) * 0);

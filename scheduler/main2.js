@@ -183,6 +183,8 @@ const Temp = mongoose.model("temps", tempSchema);
 // clear();
 // return;
 
+let storedCount = 0;
+
 async function storeSched() {
   const element = await Temp.findOne({}).sort({ _id: -1 });
   try {
@@ -224,10 +226,13 @@ async function storeSched() {
       await Ads.create(response.data.data);
       console.log(";) mongodb");
     }
-    await new Promise((resolve, reject) =>
-      setTimeout(() => resolve(), 1000 * 20 + Math.floor(Math.random() * 2000))
-    );
     await Temp.deleteOne({ _id: element._id });
+    storedCount++;
+    if (storedCount > 15) {
+      const v = await axios.get(`http://localhost:5001/api/sneeze`);
+      if (v.data == 400) return 0;
+      storedCount = 0;
+    }
   } catch (err) {
     await Temp.deleteOne({ _id: element._id });
     console.log(err);
@@ -280,8 +285,8 @@ async function getTwitterAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    if (v.data == 400) return 0;
+    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    // if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }
@@ -331,8 +336,8 @@ async function getInstagramAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    if (v.data == 400) return 0;
+    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    // if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }
@@ -382,8 +387,8 @@ async function getPinterestAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    if (v.data == 400) return 0;
+    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    // if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }
@@ -433,8 +438,8 @@ async function getYahooAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    if (v.data == 400) return 0;
+    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    // if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }
