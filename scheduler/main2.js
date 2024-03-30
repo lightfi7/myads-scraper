@@ -227,12 +227,12 @@ async function storeSched() {
       console.log(";) mongodb");
     }
     await Temp.deleteOne({ _id: element._id });
-    storedCount++;
-    if (storedCount > 15) {
-      const v = await axios.get(`http://localhost:5001/api/sneeze`);
-      if (v.data == 400) return 0;
-      storedCount = 0;
-    }
+    // storedCount++;
+    // if (storedCount > 15) {
+    //   const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    //   if (v.data == 400) return 0;
+    //   storedCount = 0;
+    // }
   } catch (err) {
     await Temp.deleteOne({ _id: element._id });
     console.log(err);
@@ -285,8 +285,8 @@ async function getTwitterAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    // if (v.data == 400) return 0;
+    const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }
@@ -336,8 +336,8 @@ async function getInstagramAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    // if (v.data == 400) return 0;
+    const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }
@@ -387,8 +387,8 @@ async function getPinterestAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    // if (v.data == 400) return 0;
+    const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }
@@ -438,8 +438,8 @@ async function getYahooAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    // const v = await axios.get(`http://localhost:5001/api/sneeze`);
-    // if (v.data == 400) return 0;
+    const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
 }

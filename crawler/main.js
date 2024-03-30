@@ -23,7 +23,7 @@ const WT = 300000;
 const start = async () => {
   // Launch the browser
   const browser = await puppeteer.launch({
-    // headless: false,
+    headless: false,
     args: ["--no-sandbox"],
   });
 
@@ -106,8 +106,8 @@ const start = async () => {
   console.log(authorization);
 
   await page.waitForSelector("#zbaseiframe", { timeout: WT });
-  const elementHandle = await page.$("#zbaseiframe"); // Replace '#iframeId' with your iframe selector
-  const frame = await elementHandle.contentFrame();
+  let elementHandle = await page.$("#zbaseiframe"); // Replace '#iframeId' with your iframe selector
+  let frame = await elementHandle.contentFrame();
 
   //Server
   const app = express();
@@ -183,9 +183,8 @@ const start = async () => {
       first_seen,
     };
     try {
-      await page.waitForSelector("#zbaseiframe", { timeout: WT });
-      const elementHandle = await page.$("#zbaseiframe"); // Replace '#iframeId' with your iframe selector
-      const frame = await elementHandle.contentFrame();
+      elementHandle = await page.$("#zbaseiframe"); // Replace '#iframeId' with your iframe selector
+      frame = await elementHandle.contentFrame();
       const response = await frame.evaluate((data) => {
         return new Promise((resolve, reject) => {
           const xhr = new XMLHttpRequest();
@@ -220,7 +219,17 @@ const start = async () => {
 
   app.get("/api/sneeze", async (req, res) => {
     waiting = true;
-    await page.reload();
+    elementHandle = await page.$("#zbaseiframe"); // Replace '#iframeId' with your iframe selector
+    frame = await elementHandle.contentFrame();
+    const disabled = await frame.evaluate(() => {
+      return (
+        document
+          .querySelector(".el-pagination button.btn-prev")
+          .getAttribute("disabled") == "disabled"
+      );
+    });
+    if (disabled) await frame.click(".el-pagination button.btn-next");
+    else await frame.click(".el-pagination button.btn-prev");
     res.send(200);
     waiting = false;
   });
