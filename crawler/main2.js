@@ -18,6 +18,9 @@ const APIKEY = "b3fc86a7194ba8fcc96739b13bbe1730";
 let authorization = "",
   waiting = false;
 
+const USERNAME = "apuchasca@gmail.com",
+  PASSWORD = "Sertu$12";
+
 const WT = 300000;
 
 const start = async () => {
