@@ -94,39 +94,6 @@ const start = async () => {
   // Open a new page
   const page = await browser.newPage();
 
-  const preloadFile = fs.readFileSync("./inject.js", "utf8");
-  await page.evaluateOnNewDocument(preloadFile);
-
-  page.on("console", async (msg) => {
-    const txt = msg.text();
-    if (txt.includes("intercepted-params:")) {
-      const params = JSON.parse(txt.replace("intercepted-params:", ""));
-      console.log(params);
-
-      try {
-        console.log(`Solving the captcha...`);
-        const res = await solver.cloudflareTurnstile(params);
-        console.log(`Solved the captcha ${res.id}`);
-        console.log(res);
-
-        await page.evaluate((token) => {
-          cfCallback(token);
-        }, res.data);
-
-        console.log("loaded captacha");
-        let delay = 10000; // 100 miliseconds
-
-        setTimeout(async () => {
-          // Code to execute after the delay
-          console.log("100 seconds have passed");
-        }, delay);
-      } catch (e) {
-        console.log(e.err);
-      }
-    } else {
-    }
-  });
-
   // const userAgent = new UserAgent({ deviceCategory: "desktop" });
   // const randomUserAgent = userAgent.toString();
 
