@@ -7,24 +7,85 @@ const UserAgent = require("user-agents");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
 
-const { Solver } = require("2captcha-ts");
+const https = require("follow-redirects").https;
+const fs = require("fs");
+const AdmZip = require("adm-zip");
+
+const apiKey = "36b7dcdcb9a3160a28acf0bf52699d0c";
+const pluginURL = "https://antcpt.com/anticaptcha-plugin.zip";
 
 const APIKEY = "b3fc86a7194ba8fcc96739b13bbe1730";
-const solver = new Solver(APIKEY);
 
 let authorization = "",
   waiting = false;
 
-const USERNAME = "apuchasca@gmail.com",
-  PASSWORD = "Sertu$12";
-
 const WT = 300000;
 
 const start = async () => {
+  // download the plugin
+  await new Promise((resolve) => {
+    https.get(pluginURL, (resp) =>
+      resp.pipe(fs.createWriteStream("./plugin.zip").on("close", resolve))
+    );
+  });
+  // unzip it
+  const zip = new AdmZip("./plugin.zip");
+  await zip.extractAllTo("./plugin/", true);
+
+  // set API key in configuration file
+  await new Promise((resolve, reject) => {
+    if (fs.existsSync("./plugin/js/config_ac_api_key.js")) {
+      let confData = fs.readFileSync(
+        "./plugin/js/config_ac_api_key.js",
+        "utf8"
+      );
+      confData = confData.replace(
+        /antiCapthaPredefinedApiKey = ''/g,
+        `antiCapthaPredefinedApiKey = '${apiKey}'`
+      );
+      fs.writeFileSync("./plugin/js/config_ac_api_key.js", confData, "utf8");
+      resolve();
+    } else {
+      console.error("plugin configuration not found!");
+      reject();
+    }
+  });
   // Launch the browser
   const browser = await puppeteer.launch({
     // headless: false,
-    args: ["--no-sandbox"],
+    ignoreDefaultArgs: ["--disable-extensions", "--enable-automation"],
+    args: [
+      "--disable-web-security",
+      "--disable-features=IsolateOrigins,site-per-process",
+      "--allow-running-insecure-content",
+      "--disable-blink-features=AutomationControlled",
+      "--no-sandbox",
+      "--mute-audio",
+      "--no-zygote",
+      "--no-xshm",
+      "--window-size=1920,1080",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--disable-dev-shm-usage",
+      "--disable-gpu",
+      "--enable-webgl",
+      "--ignore-certificate-errors",
+      "--lang=en-US,en;q=0.9",
+      "--password-store=basic",
+      "--disable-gpu-sandbox",
+      "--disable-software-rasterizer",
+      "--disable-background-timer-throttling",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-renderer-backgrounding",
+      "--disable-infobars",
+      "--disable-breakpad",
+      "--disable-canvas-aa",
+      "--disable-2d-canvas-clip-aa",
+      "--disable-gl-drawing-for-tests",
+      "--enable-low-end-device-mode",
+      "--disable-extensions-except=./plugin",
+      "--load-extension=./plugin",
+    ],
   });
 
   // const browserURL = 'http://127.0.0.1:21222';
@@ -75,6 +136,8 @@ const start = async () => {
   await page.goto("https://bigspy.com/user/login", {
     timeout: WT,
   });
+  // disable navigation timeout errors
+  await page.setDefaultNavigationTimeout(0);
 
   await page.waitForSelector("#loginform-username", {
     timeout: WT,
@@ -83,8 +146,16 @@ const start = async () => {
   await page.type("#loginform-username", USERNAME);
   await page.type("#loginform-password", PASSWORD);
 
-  await page.click("#loginBut");
+  // wait for "solved" selector to come up
+  await page
+    .waitForSelector(".antigate_solver.solved")
+    .catch((error) => console.log("failed to wait for the selector"));
 
+  // press submit button
+  await Promise.all([
+    page.click("#loginBut"),
+    page.waitForNavigation({ waitUntil: "networkidle0" }),
+  ]);
   //#endregion
 
   console.log(";)");
