@@ -1,5 +1,4 @@
 const express = require("express");
-const fs = require("fs");
 const puppeteer = require("puppeteer-extra");
 const UserAgent = require("user-agents");
 
