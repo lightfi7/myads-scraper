@@ -444,7 +444,7 @@ async function getYahooAds(page) {
   return page + 1;
 }
 
-cron.schedule("*/2 * * * *", () => {
+cron.schedule("*/1 * * * *", () => {
   console.log("=>");
   storeSched();
 });
