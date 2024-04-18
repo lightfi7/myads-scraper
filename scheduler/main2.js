@@ -78,10 +78,10 @@ const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 
 mongoose
-  .connect("mongodb://34.16.54.203:27017", {
+  .connect("mongodb://34.30.29.35:27017", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    dbName: "mydatabase",
+    dbName: "homestead",
     user: "root",
     pass: "mari2Ana23sem",
   })
