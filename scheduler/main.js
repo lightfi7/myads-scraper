@@ -190,7 +190,7 @@ async function storeSched() {
   try {
     if (element == null) return;
     const response = await axios.get(
-      `http://localhost:5001/api/information?id=${element.id}&first_seen=${element.created_at}`
+      `http://localhost:6001/api/information?id=${element.id}&first_seen=${element.created_at}`
     );
     if (response.status === 200) {
       if (response.data.banned) return;
@@ -265,7 +265,7 @@ async function getYoutubeAds(page) {
   const end_time = parseInt(timestamp / 1e3);
   try {
     const params = `platform=7&n=${page}&begin=${start_time}&end=${end_time}`;
-    const r = await axios.get("http://localhost:5001/api/get?" + params);
+    const r = await axios.get("http://localhost:6001/api/get?" + params);
     const data = r.data.data;
     if (r.data.errcode == 110008) return page;
     for (i in data) {
@@ -284,7 +284,7 @@ async function getYoutubeAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    const v = await axios.get(`http://localhost:6001/api/sneeze`);
     if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
@@ -316,7 +316,7 @@ async function getTiktokAds(page) {
   const end_time = parseInt(timestamp / 1e3);
   try {
     const params = `platform=43&n=${page}&begin=${start_time}&end=${end_time}`;
-    const r = await axios.get("http://localhost:5001/api/get?" + params);
+    const r = await axios.get("http://localhost:6001/api/get?" + params);
     const data = r.data.data;
     if (r.data.errcode == 110008) return page;
     for (i in data) {
@@ -335,7 +335,7 @@ async function getTiktokAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    const v = await axios.get(`http://localhost:6001/api/sneeze`);
     if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
@@ -367,7 +367,7 @@ async function getFacebookAds(page) {
   const end_time = parseInt(timestamp / 1e3);
   try {
     const params = `platform=1&n=${page}&begin=${start_time}&end=${end_time}`;
-    const r = await axios.get("http://localhost:5001/api/get?" + params);
+    const r = await axios.get("http://localhost:6001/api/get?" + params);
     const data = r.data.data;
     if (r.data.errcode == 110008) return page;
     for (i in data) {
@@ -386,7 +386,7 @@ async function getFacebookAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    const v = await axios.get(`http://localhost:6001/api/sneeze`);
     if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
@@ -418,7 +418,7 @@ async function getTwitterAds(page) {
   const end_time = parseInt(timestamp / 1e3);
   try {
     const params = `platform=2&n=${page}&begin=${start_time}&end=${end_time}`;
-    const r = await axios.get("http://localhost:5001/api/get?" + params);
+    const r = await axios.get("http://localhost:6001/api/get?" + params);
     const data = r.data.data;
     if (r.data.errcode == 110008) return page;
     for (i in data) {
@@ -437,7 +437,7 @@ async function getTwitterAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    const v = await axios.get(`http://localhost:6001/api/sneeze`);
     if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
@@ -469,7 +469,7 @@ async function getInstagramAds(page) {
   const end_time = parseInt(timestamp / 1e3);
   try {
     const params = `platform=5&n=${page}&begin=${start_time}&end=${end_time}`;
-    const r = await axios.get("http://localhost:5001/api/get?" + params);
+    const r = await axios.get("http://localhost:6001/api/get?" + params);
     const data = r.data.data;
     if (r.data.errcode == 110008) return page;
     for (i in data) {
@@ -488,7 +488,7 @@ async function getInstagramAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    const v = await axios.get(`http://localhost:6001/api/sneeze`);
     if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
@@ -520,7 +520,7 @@ async function getPinterestAds(page) {
   const end_time = parseInt(timestamp / 1e3);
   try {
     const params = `platform=4&n=${page}&begin=${start_time}&end=${end_time}`;
-    const r = await axios.get("http://localhost:5001/api/get?" + params);
+    const r = await axios.get("http://localhost:6001/api/get?" + params);
     const data = r.data.data;
     if (r.data.errcode == 110008) return page;
     for (i in data) {
@@ -539,7 +539,7 @@ async function getPinterestAds(page) {
   }
   try {
     await Temp.insertMany(data_array);
-    const v = await axios.get(`http://localhost:5001/api/sneeze`);
+    const v = await axios.get(`http://localhost:6001/api/sneeze`);
     if (v.data == 400) return 0;
   } catch (err) {}
   return page + 1;
