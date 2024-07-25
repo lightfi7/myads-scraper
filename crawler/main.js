@@ -44,7 +44,7 @@ var configSchema = mongoose.Schema({
   platform: Number
 })
 
-const Config = mongoose.model("configs", extraSchema);
+const Config = mongoose.model("configs", configSchema);
 
 
 

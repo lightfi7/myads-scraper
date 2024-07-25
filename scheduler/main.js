@@ -170,13 +170,7 @@ var tempSchema = mongoose.Schema({
 
 const Temp = mongoose.model("stemps", tempSchema);
 
-var configSchema = mongoose.Schema({
-  username: String,
-  password: String,
-  platform: Number
-})
 
-const config = mongoose.model("configs", extraSchema);
 
 // const clear = async () => {
 //   const duplicateRecords = await Ads.aggregate([
