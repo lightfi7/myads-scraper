@@ -18,12 +18,38 @@ const APIKEY = "b3fc86a7194ba8fcc96739b13bbe1730";
 let authorization = "",
   waiting = false;
 
-const USERNAME = "apuchasca@gmail.com",
-  PASSWORD = "Sertu$12";
-
 const WT = 300000;
 
+
+const mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
+
+mongoose
+  .connect("mongodb://144.91.126.113:27017", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: "onlyads",
+    user: "devman",
+    pass: "mari2Ana23sem",
+  })
+  .then(() => {
+    console.log("Connected to the database!");
+  })
+  .catch((err) => {
+    console.log("Cannot connect to the database!", err);
+    process.exit();
+  });
+
+var configSchema = mongoose.Schema({
+  username: String,
+  password: String,
+  platform: Number
+})
+
+const Config = mongoose.model("configs", extraSchema);
+
 const start = async () => {
+  const {username, password} = await Config.findOne({platform: 0});
   // download the plugin
   await new Promise((resolve) => {
     https.get(pluginURL, (resp) =>
@@ -112,8 +138,8 @@ const start = async () => {
     timeout: WT,
   });
 
-  await page.type("#loginform-username", USERNAME);
-  await page.type("#loginform-password", PASSWORD);
+  await page.type("#loginform-username", username);
+  await page.type("#loginform-password", password);
 
   // wait for "solved" selector to come up
   await page

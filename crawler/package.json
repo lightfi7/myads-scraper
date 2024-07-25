@@ -8,6 +8,7 @@
     "puppeteer": "^22.1.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
-    "user-agents": "^1.1.132"
+    "user-agents": "^1.1.132",
+    "mongoose": "^7.3.3"
   }
 }
