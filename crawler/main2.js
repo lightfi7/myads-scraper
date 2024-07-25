@@ -49,7 +49,7 @@ var configSchema = mongoose.Schema({
 const Config = mongoose.model("configs", extraSchema);
 
 const start = async () => {
-  const {username, password} = await Config.findOne({platform: 0});
+  const {username, password} = await Config.findOne({platform: 1});
   // download the plugin
   await new Promise((resolve) => {
     https.get(pluginURL, (resp) =>
